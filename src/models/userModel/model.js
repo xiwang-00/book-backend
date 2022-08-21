@@ -13,15 +13,19 @@ const GETCURRENTUSER = `
 
 const UPDATECURRENTUSERACCOUNT = `
     update users set first_name = $1 , 
-    last_name = $2 , phone = $3 , email = $4 , image =$5 where id = $6 
+    last_name = $2 , phone = $3, image =$4 where id = $5
 `
 
 const FIND = `
     select * from users where id <> $1 and email = $2
 `
 
+const FINDP = `
+select * from users where id = $1
+`
+
 const UPDATESECURITY = `
-    update users set password = $2 where id = $1
+    update users set password = $2 , email=$3 where id = $1
 `
 module.exports = {
     FINDONE,
@@ -29,5 +33,6 @@ module.exports = {
     GETCURRENTUSER,
     UPDATECURRENTUSERACCOUNT,
     FIND,
-    UPDATESECURITY
+    UPDATESECURITY,
+    FINDP
 }

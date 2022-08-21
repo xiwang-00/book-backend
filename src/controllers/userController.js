@@ -50,11 +50,6 @@ class UserController {
 
    async updateProfile(req,res,next){
         try{
-            const { email } = req.body
-            const candidate = await User.find(email , req.user.id)
-            if(candidate){
-                return next(ApiError.badRequest('This email already exists'))
-            }
             await User.updateAccount(req.body ,req.files , req.user)
             return res.status(201).json('updated')
         }
@@ -67,12 +62,16 @@ class UserController {
     try{
         const { currentPassword , newPassword , email} = req.body
         const candidate = await User.findOne(email)
-        let comparePassword = bcrypt.compareSync(currentPassword, candidate.password)
+        if(candidate){
+            return next(ApiError.badRequest('This email already exists'))
+        }
+        const userPassword = await User.findP(req.user.id)
+        let comparePassword = bcrypt.compareSync(currentPassword, userPassword.password)
         if (!comparePassword) {
             return next(ApiError.internal('Wrong current password specified'))
         }
         const hashPassword = await bcrypt.hash(newPassword, 5)
-        await User.updateSecurity(req.user.id , hashPassword)
+        await User.updateSecurity(req.user.id , hashPassword , userPassword.email)
         return res.status(201).json('updated')
     }
     catch(e){
