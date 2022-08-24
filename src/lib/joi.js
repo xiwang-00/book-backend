@@ -21,7 +21,6 @@ exports.updateProfileSchema = Joi.object({
     first_name: Joi.string().min(3).max(30).required(),
     last_name: Joi.string().min(3).max(30).required(),
     phone: Joi.string().length(9).pattern(/^[0-9]+$/),
-    email:Joi.string().max(50).email().required(),
 });
 
 exports.updateSecuritySchema = Joi.object({
