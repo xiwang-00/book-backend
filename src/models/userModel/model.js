@@ -24,6 +24,7 @@ const FINDP = `
 select * from users where id = $1
 `
 
+
 const UPDATESECURITY = `
     update users set password = $2 , email=$3 where id = $1
 `
